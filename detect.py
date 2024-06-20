@@ -90,7 +90,7 @@ def run(
     project=ROOT / "runs/detect",  # save results to project/name
     name="exp",  # save results to project/name
     exist_ok=False,  # existing project/name ok, do not increment
-    line_thickness=3,  # bounding box thickness (pixels)
+    line_thickness=1,  # bounding box thickness (pixels)
     hide_labels=False,  # hide labels
     hide_conf=False,  # hide confidences
     half=False,  # use FP16 half-precision inference
@@ -189,7 +189,7 @@ def run(
             s += "%gx%g " % im.shape[2:]  # print string
             gn = torch.tensor(im0.shape)[[1, 0, 1, 0]]  # normalization gain whwh
             imc = im0.copy() if save_crop else im0  # for save_crop
-            annotator = Annotator(im0, line_width=line_thickness, example=str(names))
+            annotator = Annotator(im0, line_width=line_thickness, font_size=7, example=str(names))
             if len(det):
                 # Rescale boxes from img_size to im0 size
                 det[:, :4] = scale_boxes(im.shape[2:], det[:, :4], im0.shape).round()
@@ -267,9 +267,9 @@ def run(
 def parse_opt():
     """Parses command-line arguments for YOLOv5 detection, setting inference options and model configurations."""
     parser = argparse.ArgumentParser()
-    parser.add_argument("--weights", nargs="+", type=str, default=ROOT / "yolov5s.pt", help="model path or triton URL")
-    parser.add_argument("--source", type=str, default=ROOT / "data/images", help="file/dir/URL/glob/screen/0(webcam)")
-    parser.add_argument("--data", type=str, default=ROOT / "data/coco128.yaml", help="(optional) dataset.yaml path")
+    parser.add_argument("--weights", nargs="+", type=str, default=ROOT / "runs/train/yolov5n10/weights/best.pt", help="model path or triton URL")
+    parser.add_argument("--source", type=str, default=ROOT / "datasets/nuscenes/test/images", help="file/dir/URL/glob/screen/0(webcam)")
+    parser.add_argument("--data", type=str, default=ROOT / "data/nuscenes.yaml", help="(optional) dataset.yaml path")
     parser.add_argument("--imgsz", "--img", "--img-size", nargs="+", type=int, default=[640], help="inference size h,w")
     parser.add_argument("--conf-thres", type=float, default=0.25, help="confidence threshold")
     parser.add_argument("--iou-thres", type=float, default=0.45, help="NMS IoU threshold")
@@ -289,7 +289,7 @@ def parse_opt():
     parser.add_argument("--project", default=ROOT / "runs/detect", help="save results to project/name")
     parser.add_argument("--name", default="exp", help="save results to project/name")
     parser.add_argument("--exist-ok", action="store_true", help="existing project/name ok, do not increment")
-    parser.add_argument("--line-thickness", default=3, type=int, help="bounding box thickness (pixels)")
+    parser.add_argument("--line-thickness", default=1, type=int, help="bounding box thickness (pixels)")
     parser.add_argument("--hide-labels", default=False, action="store_true", help="hide labels")
     parser.add_argument("--hide-conf", default=False, action="store_true", help="hide confidences")
     parser.add_argument("--half", action="store_true", help="use FP16 half-precision inference")
