@@ -10,6 +10,7 @@
 path: datasets/nuscenes
 train: # train files info (relative to 'path')   images
   - train.txt
+  # datasets/nuscenes/train.txt
 val: # val files info (relative to 'path')  6019 images
   - val.txt
 test: # test files info (optional)
