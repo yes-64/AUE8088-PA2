@@ -9,6 +9,10 @@ anchors:
   - [62, 45] # P4/16
   - [156, 198] # P5/32
 
+# kmean_anchors
+  # - [7.1674, 12.872]
+  # - [22.39, 15.684]
+  # - [52.758, 33.23]
 # YOLOv5 v6.0 backbone
 backbone:
   # [from, number, module, args]
