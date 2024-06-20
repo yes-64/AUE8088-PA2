@@ -7,7 +7,7 @@ import numpy as np
 import torch
 import yaml
 from tqdm import tqdm
-
+import matplotlib.pyplot as plt
 from utils import TryExcept
 from utils.general import LOGGER, TQDM_BAR_FORMAT, colorstr
 
