@@ -104,7 +104,7 @@ class ComputeLoss:
     sort_obj_iou = False
 
     # Compute losses
-    def __init__(self, model, autobalance=False):
+    def __init__(self, model, autobalance=False, people_cls_weight = 2.0):
         """Initializes ComputeLoss with model and autobalance option, autobalances losses if True."""
         device = next(model.parameters()).device  # get model device
         h = model.hyp  # hyperparameters
@@ -130,6 +130,7 @@ class ComputeLoss:
         self.nl = m.nl  # number of layers
         self.anchors = m.anchors
         self.device = device
+        self.people_cls_weight = people_cls_weight
 
     def __call__(self, p, targets):  # predictions, targets
         """Performs forward pass, calculating class, box, and object loss for given predictions and targets."""
@@ -176,6 +177,9 @@ class ComputeLoss:
                     t = torch.full_like(pcls, self.cn, device=self.device)  # targets
                     t[range(n), tcls[i]] = self.cp
                     lcls += self.BCEcls(pcls, t)  # BCE
+
+                    people_indices = tcls[i] == self.nc - 2  
+                    lcls += self.BCEcls(pcls[people_indices], t[people_indices]) * self.people_cls_weight
 
                 # Append targets to text file
                 # with open('targets.txt', 'a') as file:
